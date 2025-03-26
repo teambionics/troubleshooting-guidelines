@@ -46,6 +46,48 @@
             text-align: left;
             margin-top: 20px;
         }
+        .chatbot-container {
+            width: 300px;
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: white;
+            padding: 15px;
+            border-radius: 10px;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
+            text-align: center;
+            display: none;
+        }
+        .chatbot-avatar {
+            width: 80px;
+            height: 80px;
+            cursor: pointer;
+        }
+        .chatbot-box {
+            max-height: 250px;
+            overflow-y: auto;
+            text-align: left;
+            font-size: 14px;
+            margin-top: 10px;
+            padding: 10px;
+            background: #f9f9f9;
+            border-radius: 5px;
+            box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.1);
+        }
+        .chatbot-input {
+            width: 90%;
+            padding: 8px;
+            margin-top: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        .chatbot-logo {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            cursor: pointer;
+            width: 80px;
+        }
     </style>
 </head>
 <body>
@@ -74,5 +116,59 @@
         <a href="https://drive.google.com/uc?export=download&id=1cYz0JpNFtphOjhatt6bVZq-qGWu25fTR" download="servomotor_current_monitor.html" class="button">Download Servo Current Monitor Page</a>
         <a href="https://drive.google.com/uc?export=download&id=1cZVOJdYqFht78UCRPBktSrf3Xg7bvHxR" download="Arduino-code.ino" class="button">Download Arduino Code</a>
     </div>
+
+    <img src="logo-chatbot.png" alt="Bionic Buddy" class="chatbot-logo" onclick="toggleChatbot()">
+
+    <div class="chatbot-container" id="chatbotContainer">
+        <h3>Bionic Buddy</h3>
+        <div class="chatbot-box" id="chatbotBox">
+            <p><strong>Bionic Buddy:</strong> Hello! I'm Bionic Buddy, here to help with your bionic arm issues. 😊 Type a number from the list below:<br>
+            1. Servo overheating<br>
+            2. PID tuning problems<br>
+            3. Power fluctuations<br>
+            4. High-frequency noise interference<br>
+            5. Sensor calibration errors<br>
+            6. Servo jittering<br>
+            7. Low battery efficiency<br>
+            8. Wireless signal interference<br>
+            9. Overcurrent protection triggering frequently<br>
+            10. Software bugs causing erratic behavior<br>
+            11. Slow response time<br>
+            12. Joint misalignment</p>
+        </div>
+        <input type="text" id="chatInput" class="chatbot-input" placeholder="Type the issue number here..." onkeypress="handleChat(event)">
+    </div>
+
+    <script>
+        function toggleChatbot() {
+            var chatbotContainer = document.getElementById('chatbotContainer');
+            chatbotContainer.style.display = chatbotContainer.style.display === 'none' ? 'block' : 'none';
+        }
+
+        function handleChat(event) {
+            if (event.key === 'Enter') {
+                var input = document.getElementById('chatInput').value.trim();
+                var chatbotBox = document.getElementById('chatbotBox');
+                chatbotBox.innerHTML += `<p><strong>You:</strong> ${input}</p>`;
+                let responses = {
+                    "1": "Overheating? Try a cooling fan or heat sink to reduce temperature.",
+                    "2": "PID tuning tricky? Start with small changes and test stability.",
+                    "3": "Power fluctuations? Ensure stable power by using capacitors.",
+                    "4": "High-frequency noise? Shield your cables and avoid long wires.",
+                    "5": "Calibration off? Try recalibrating with reference values.",
+                    "6": "Servo jittering? Check grounding and use filtering capacitors.",
+                    "7": "Battery draining fast? Consider a higher-capacity power source.",
+                    "8": "Wireless issues? Move devices away from interference sources.",
+                    "9": "Overcurrent problems? Check for excessive load on servos.",
+                    "10": "Software bugs? Debug systematically, test one change at a time.",
+                    "11": "Slow response? Optimize your real-time processing code.",
+                    "12": "Joint misalignment? Recalibrate and check for loose connections."
+                };
+                let response = responses[input] || "I’m not sure, but try selecting a number from the list!";
+                setTimeout(() => chatbotBox.innerHTML += `<p><strong>Bionic Buddy:</strong> ${response}</p>`, 1000);
+                document.getElementById('chatInput').value = '';
+            }
+        }
+    </script>
 </body>
 </html>
