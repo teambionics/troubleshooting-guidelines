@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bionic Arm Troubleshooting & Downloads</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+            color: #333;
+            text-align: center;
+        }
+        .container {
+            width: 80%;
+            margin: 50px auto;
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+        }
+        h1 {
+            color: #007BFF;
+        }
+        .button {
+            display: inline-block;
+            padding: 12px 20px;
+            margin: 10px;
+            font-size: 16px;
+            color: white;
+            background: linear-gradient(135deg, #007BFF, #0056b3);
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            text-decoration: none;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+            transition: all 0.3s ease;
+        }
+        .button:hover {
+            background: linear-gradient(135deg, #0056b3, #007BFF);
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.3);
+        }
+        .troubleshooting {
+            text-align: left;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Bionic Arm Troubleshooting & Code Downloads</h1>
+        <h3>Created by: Anik Kumar Baidya, Poonam Kumari & Vertika Srivastava</h3>
+        <p>Follow the troubleshooting steps below to resolve common issues.</p>
+        
+        <div class="troubleshooting">
+            <h2>Common Troubleshooting Steps</h2>
+            <ul>
+                <li>Verify the PWM signal using an oscilloscope to ensure correct duty cycle.</li>
+                <li>Check for ground loops or floating pins causing erratic signals.</li>
+                <li>Ensure servos receive adequate current by using an external power supply.</li>
+                <li>Confirm correct baud rate in serial monitor and use shielded cables to prevent EMI.</li>
+                <li>Implement capacitors (1000µF electrolytic) across power rails to stabilize voltage supply.</li>
+                <li>Use heat sinks on high-power components and monitor temperature with an IR sensor.</li>
+                <li>Optimize control loop timing by reducing redundant computations in the firmware.</li>
+                <li>Calibrate the servos using known angle references before deployment.</li>
+                <li>Check analog-to-digital conversion settings for sensor inputs.</li>
+                <li>Monitor battery voltage and implement undervoltage protection circuits.</li>
+            </ul>
+        </div>
+
+        <h2>Download Required Code</h2>
+        <a href="https://drive.google.com/uc?export=download&id=1cYz0JpNFtphOjhatt6bVZq-qGWu25fTR" download="servomotor_current_monitor.html" class="button">Download Servo Current Monitor Page</a>
+        <a href="https://drive.google.com/uc?export=download&id=1cZVOJdYqFht78UCRPBktSrf3Xg7bvHxR" download="Arduino-code.ino" class="button">Download Arduino Code</a>
+    </div>
+</body>
+</html>
