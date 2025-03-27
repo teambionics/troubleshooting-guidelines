@@ -42,44 +42,68 @@
             background: linear-gradient(135deg, #0056b3, #007BFF);
             box-shadow: 0 6px 15px rgba(0, 0, 0, 0.3);
         }
-        .troubleshooting {
-            text-align: left;
-            margin-top: 20px;
-        }
         .chatbot-container {
-            width: 300px;
+            width: 350px;
             position: fixed;
             bottom: 20px;
             right: 20px;
             background: white;
-            padding: 15px;
-            border-radius: 10px;
+            border-radius: 15px;
             box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
-            text-align: center;
             display: none;
+            flex-direction: column;
         }
-        .chatbot-avatar {
-            width: 80px;
-            height: 80px;
-            cursor: pointer;
+        .chatbot-header {
+            background: #007BFF;
+            color: white;
+            padding: 15px;
+            text-align: center;
+            font-size: 18px;
+            font-weight: bold;
         }
         .chatbot-box {
-            max-height: 250px;
+            height: 400px;
             overflow-y: auto;
-            text-align: left;
-            font-size: 14px;
-            margin-top: 10px;
-            padding: 10px;
-            background: #f9f9f9;
-            border-radius: 5px;
-            box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.1);
+            padding: 15px;
+            background: #f4f4f4;
+            display: flex;
+            flex-direction: column;
         }
-        .chatbot-input {
-            width: 90%;
-            padding: 8px;
-            margin-top: 10px;
+        .message {
+            max-width: 80%;
+            padding: 10px;
+            border-radius: 10px;
+            margin-bottom: 10px;
+        }
+        .bot-message {
+            background: #007BFF;
+            color: white;
+            align-self: flex-start;
+        }
+        .user-message {
+            background: #DCF8C6;
+            align-self: flex-end;
+        }
+        .chat-input-container {
+            display: flex;
+            padding: 10px;
+            background: white;
+            border-top: 1px solid #ddd;
+        }
+        .chat-input {
+            flex: 1;
+            padding: 10px;
             border: 1px solid #ccc;
             border-radius: 5px;
+        }
+        .send-button {
+            background: #007BFF;
+            color: white;
+            border: none;
+            padding: 10px;
+            margin-left: 10px;
+            border-radius: 5px;
+            cursor: pointer;
         }
         .chatbot-logo {
             position: fixed;
@@ -95,79 +119,104 @@
         <h1>Bionic Arm Troubleshooting & Code Downloads</h1>
         <h3>Created by: Anik Kumar Baidya, Poonam Kumari & Vertika Srivastava</h3>
         <p>Follow the troubleshooting steps below to resolve common issues.</p>
-        
-        <div class="troubleshooting">
-            <h2>Common Troubleshooting Steps</h2>
-            <ul>
-                <li>Verify the PWM signal using an oscilloscope to ensure correct duty cycle.</li>
-                <li>Check for ground loops or floating pins causing erratic signals.</li>
-                <li>Ensure servos receive adequate current by using an external power supply.</li>
-                <li>Confirm correct baud rate in serial monitor and use shielded cables to prevent EMI.</li>
-                <li>Implement capacitors (1000µF electrolytic) across power rails to stabilize voltage supply.</li>
-                <li>Use heat sinks on high-power components and monitor temperature with an IR sensor.</li>
-                <li>Optimize control loop timing by reducing redundant computations in the firmware.</li>
-                <li>Calibrate the servos using known angle references before deployment.</li>
-                <li>Check analog-to-digital conversion settings for sensor inputs.</li>
-                <li>Monitor battery voltage and implement undervoltage protection circuits.</li>
-            </ul>
-        </div>
+
+        <h2>General Troubleshooting Instructions</h2>
+        <ul style="text-align: left; margin-left: 10%;">
+            <li>🔧 <strong>Restart the system:</strong> Power cycle the bionic arm and ensure all connections are secure.</li>
+            <li>⚡ <strong>Check the power supply:</strong> Ensure the battery or power source is stable and providing sufficient voltage.</li>
+            <li>🛠 <strong>Inspect wiring:</strong> Look for any loose or damaged wires and fix them accordingly.</li>
+            <li>📟 <strong>Monitor error codes:</strong> Check any LED indicators or diagnostic messages for clues.</li>
+            <li>🖥 <strong>Software update:</strong> Ensure you are using the latest firmware and code.</li>
+            <li>💾 <strong>Recalibrate sensors:</strong> If necessary, reset the calibration values for optimal performance.</li>
+        </ul>
 
         <h2>Download Required Code</h2>
-        <a href="https://drive.google.com/uc?export=download&id=1cYz0JpNFtphOjhatt6bVZq-qGWu25fTR" download="servomotor_current_monitor.html" class="button">Download Servo Current Monitor Page</a>
-        <a href="https://drive.google.com/uc?export=download&id=1cZVOJdYqFht78UCRPBktSrf3Xg7bvHxR" download="Arduino-code.ino" class="button">Download Arduino Code</a>
+        <a href="#" class="button">Download Servo Current Monitor Page</a>
+        <a href="#" class="button">Download Arduino Code</a>
     </div>
 
     <img src="logo-chatbot.png" alt="Bionic Buddy" class="chatbot-logo" onclick="toggleChatbot()">
 
     <div class="chatbot-container" id="chatbotContainer">
-        <h3>Bionic Buddy</h3>
-        <div class="chatbot-box" id="chatbotBox">
-            <p><strong>Bionic Buddy:</strong> Hello! I'm Bionic Buddy, here to help with your bionic arm issues. 😊 Type a number from the list below:<br>
-            1. Servo overheating<br>
-            2. PID tuning problems<br>
-            3. Power fluctuations<br>
-            4. High-frequency noise interference<br>
-            5. Sensor calibration errors<br>
-            6. Servo jittering<br>
-            7. Low battery efficiency<br>
-            8. Wireless signal interference<br>
-            9. Overcurrent protection triggering frequently<br>
-            10. Software bugs causing erratic behavior<br>
-            11. Slow response time<br>
-            12. Joint misalignment</p>
+        <div class="chatbot-header">Bionic Buddy</div>
+        <div class="chatbot-box" id="chatBox">
+            <div class="message bot-message">👋 Hey there! I'm Bionic Buddy. Do you need help with your bionic arm?</div>
+            <div class="message bot-message">Select an option:<br>✅ Yes<br>❌ No</div>
         </div>
-        <input type="text" id="chatInput" class="chatbot-input" placeholder="Type the issue number here..." onkeypress="handleChat(event)">
+        <div class="chat-input-container">
+            <input type="text" id="chatInput" class="chat-input" placeholder="Type here..." onkeypress="handleChat(event)">
+            <button onclick="sendChat()" class="send-button">Send</button>
+        </div>
     </div>
 
     <script>
+        let stage = 0;
+        const troubleshootingSteps = [
+            "1️⃣ Overheating issues",
+            "2️⃣ Difficulty tuning the PID controller",
+            "3️⃣ Power supply fluctuations",
+            "4️⃣ High-frequency noise in signals",
+            "5️⃣ Calibration problems",
+            "6️⃣ Servo jittering",
+            "7️⃣ Battery draining too quickly",
+            "8️⃣ Wireless communication issues",
+            "9️⃣ Overcurrent protection problems",
+            "🔟 Software bugs and crashes",
+            "1️⃣1️⃣ Slow response from the system",
+            "1️⃣2️⃣ Joint misalignment"
+        ];
+        
+        const solutions = {
+            "1": "Try using a cooling fan or heat sink to reduce temperature.",
+            "2": "Start with small PID adjustments and observe stability.",
+            "3": "Ensure power stability by using capacitors and proper grounding.",
+            "4": "Use shielded cables and avoid running signal wires next to power cables.",
+            "5": "Recalibrate using known reference points for better accuracy.",
+            "6": "Check for ground loops and use filtering capacitors to stabilize servos.",
+            "7": "Use a higher-capacity battery or optimize power usage in your system.",
+            "8": "Reduce interference by moving away from strong EM sources and changing channels.",
+            "9": "Check for excessive servo load and consider using a current limiter.",
+            "10": "Debug systematically and isolate software issues one by one.",
+            "11": "Optimize real-time processing and avoid redundant computations.",
+            "12": "Ensure all mechanical parts are properly aligned and securely fastened."
+        };
+
         function toggleChatbot() {
             var chatbotContainer = document.getElementById('chatbotContainer');
-            chatbotContainer.style.display = chatbotContainer.style.display === 'none' ? 'block' : 'none';
+            chatbotContainer.style.display = chatbotContainer.style.display === 'none' ? 'flex' : 'none';
         }
 
         function handleChat(event) {
             if (event.key === 'Enter') {
-                var input = document.getElementById('chatInput').value.trim();
-                var chatbotBox = document.getElementById('chatbotBox');
-                chatbotBox.innerHTML += `<p><strong>You:</strong> ${input}</p>`;
-                let responses = {
-                    "1": "Overheating? Try a cooling fan or heat sink to reduce temperature.",
-                    "2": "PID tuning tricky? Start with small changes and test stability.",
-                    "3": "Power fluctuations? Ensure stable power by using capacitors.",
-                    "4": "High-frequency noise? Shield your cables and avoid long wires.",
-                    "5": "Calibration off? Try recalibrating with reference values.",
-                    "6": "Servo jittering? Check grounding and use filtering capacitors.",
-                    "7": "Battery draining fast? Consider a higher-capacity power source.",
-                    "8": "Wireless issues? Move devices away from interference sources.",
-                    "9": "Overcurrent problems? Check for excessive load on servos.",
-                    "10": "Software bugs? Debug systematically, test one change at a time.",
-                    "11": "Slow response? Optimize your real-time processing code.",
-                    "12": "Joint misalignment? Recalibrate and check for loose connections."
-                };
-                let response = responses[input] || "I’m not sure, but try selecting a number from the list!";
-                setTimeout(() => chatbotBox.innerHTML += `<p><strong>Bionic Buddy:</strong> ${response}</p>`, 1000);
-                document.getElementById('chatInput').value = '';
+                sendChat();
             }
+        }
+
+        function sendChat() {
+            var inputField = document.getElementById('chatInput');
+            var input = inputField.value.trim().toLowerCase();
+            if (input === '') return;
+            
+            var chatBox = document.getElementById('chatBox');
+            chatBox.innerHTML += `<div class="message user-message">${input}</div>`;
+            inputField.value = '';
+
+            setTimeout(() => {
+                if (stage === 0) {
+                    if (input.includes('yes')) {
+                        chatBox.innerHTML += `<div class="message bot-message">Here are some common issues:</div>`;
+                        troubleshootingSteps.forEach(step => {
+                            chatBox.innerHTML += `<div class="message bot-message">${step}</div>`;
+                        });
+                        chatBox.innerHTML += `<div class="message bot-message">Please type a number (1-12) to get help with a specific issue.</div>`;
+                        stage = 1;
+                    } else {
+                        chatBox.innerHTML += `<div class="message bot-message">Alright, I'm here if you need me! 😊</div>`;
+                    }
+                } else if (stage === 1) {
+                    chatBox.innerHTML += `<div class="message bot-message">${solutions[input] || "Please enter a valid number (1-12)."}</div>`;
+                }
+            }, 1000);
         }
     </script>
 </body>
