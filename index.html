@@ -24,6 +24,10 @@
         h1 {
             color: #007BFF;
         }
+        .section-divider {
+            margin: 30px 0;
+            border-bottom: 2px solid #ddd;
+        }
         .button {
             display: inline-block;
             padding: 12px 20px;
@@ -115,10 +119,13 @@
     </style>
 </head>
 <body>
+
     <div class="container">
         <h1>Bionic Arm Troubleshooting & Code Downloads</h1>
         <h3>Created by: Anik Kumar Baidya, Poonam Kumari & Vertika Srivastava</h3>
         <p>Follow the troubleshooting steps below to resolve common issues.</p>
+
+        <div class="section-divider"></div>
 
         <h2>General Troubleshooting Instructions</h2>
         <ul style="text-align: left; margin-left: 10%;">
@@ -130,9 +137,11 @@
             <li>💾 <strong>Recalibrate sensors:</strong> If necessary, reset the calibration values for optimal performance.</li>
         </ul>
 
+        <div class="section-divider"></div>
+
         <h2>Download Required Code</h2>
-<a href="https://drive.google.com/uc?export=download&id=1cYz0JpNFtphOjhatt6bVZq-qGWu25fTR" class="button" download>Download Servo Current Monitor Page</a>
-<a href="https://drive.google.com/uc?export=download&id=1cZVOJdYqFht78UCRPBktSrf3Xg7bvHxR" class="button" download>Download Arduino Code</a>
+        <a href="https://drive.google.com/uc?export=download&id=1cYz0JpNFtphOjhatt6bVZq-qGWu25fTR" class="button" download>Download Servo Current Monitor Page</a>
+        <a href="https://drive.google.com/uc?export=download&id=1cZVOJdYqFht78UCRPBktSrf3Xg7bvHxR" class="button" download>Download Arduino Code</a>
     </div>
 
     <img src="logo-chatbot.png" alt="Bionic Buddy" class="chatbot-logo" onclick="toggleChatbot()">
@@ -165,7 +174,7 @@
             "1️⃣1️⃣ Slow response from the system",
             "1️⃣2️⃣ Joint misalignment"
         ];
-        
+    
         const solutions = {
             "1": "Try using a cooling fan or heat sink to reduce temperature.",
             "2": "Start with small PID adjustments and observe stability.",
@@ -180,27 +189,27 @@
             "11": "Optimize real-time processing and avoid redundant computations.",
             "12": "Ensure all mechanical parts are properly aligned and securely fastened."
         };
-
+    
         function toggleChatbot() {
-            var chatbotContainer = document.getElementById('chatbotContainer');
+            let chatbotContainer = document.getElementById('chatbotContainer');
             chatbotContainer.style.display = chatbotContainer.style.display === 'none' ? 'flex' : 'none';
         }
-
+    
         function handleChat(event) {
             if (event.key === 'Enter') {
                 sendChat();
             }
         }
-
+    
         function sendChat() {
-            var inputField = document.getElementById('chatInput');
-            var input = inputField.value.trim().toLowerCase();
+            let inputField = document.getElementById('chatInput');
+            let input = inputField.value.trim().toLowerCase();
             if (input === '') return;
-            
-            var chatBox = document.getElementById('chatBox');
+    
+            let chatBox = document.getElementById('chatBox');
             chatBox.innerHTML += `<div class="message user-message">${input}</div>`;
             inputField.value = '';
-
+    
             setTimeout(() => {
                 if (stage === 0) {
                     if (input.includes('yes')) {
@@ -210,14 +219,21 @@
                         });
                         chatBox.innerHTML += `<div class="message bot-message">Please type a number (1-12) to get help with a specific issue.</div>`;
                         stage = 1;
-                    } else {
+                    } else if (input.includes('no')) {
                         chatBox.innerHTML += `<div class="message bot-message">Alright, I'm here if you need me! 😊</div>`;
+                    } else {
+                        chatBox.innerHTML += `<div class="message bot-message">Please respond with 'Yes' or 'No'. 😊</div>`;
                     }
                 } else if (stage === 1) {
-                    chatBox.innerHTML += `<div class="message bot-message">${solutions[input] || "Please enter a valid number (1-12)."}</div>`;
+                    if (solutions[input]) {
+                        chatBox.innerHTML += `<div class="message bot-message">${solutions[input]}</div>`;
+                    } else {
+                        chatBox.innerHTML += `<div class="message bot-message">Please enter a valid number (1-12).</div>`;
+                    }
                 }
+    
+                chatBox.scrollTop = chatBox.scrollHeight; // Auto-scroll to the latest message
             }, 1000);
         }
     </script>
-</body>
-</html>
+    
