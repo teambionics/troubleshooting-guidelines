@@ -160,6 +160,9 @@
 
     <script>
         let stage = 0;
+        let currentProblem = null;
+        let problemCount = {};
+        
         const troubleshootingSteps = [
             "1️⃣ Overheating issues",
             "2️⃣ Difficulty tuning the PID controller",
@@ -176,24 +179,48 @@
         ];
     
         const solutions = {
-            "1": "Try using a cooling fan or heat sink to reduce temperature.",
-            "2": "Start with small PID adjustments and observe stability.",
-            "3": "Ensure power stability by using capacitors and proper grounding.",
-            "4": "Use shielded cables and avoid running signal wires next to power cables.",
-            "5": "Recalibrate using known reference points for better accuracy.",
-            "6": "Check for ground loops and use filtering capacitors to stabilize servos.",
-            "7": "Use a higher-capacity battery or optimize power usage in your system.",
-            "8": "Reduce interference by moving away from strong EM sources and changing channels.",
-            "9": "Check for excessive servo load and consider using a current limiter.",
-            "10": "Debug systematically and isolate software issues one by one.",
-            "11": "Optimize real-time processing and avoid redundant computations.",
-            "12": "Ensure all mechanical parts are properly aligned and securely fastened."
+            "1": ["Try using a cooling fan or heat sink.", "Move it to a well-ventilated area.", "Reduce CPU load if possible."],
+            "2": ["Start with small PID adjustments.", "Try a different tuning method.", "Use auto-tuning features if available."],
+            "3": ["Ensure power stability by using capacitors.", "Use a voltage regulator.", "Check battery connections."],
+            "4": ["Use shielded cables and avoid interference.", "Try twisting the signal wires.", "Use ferrite beads to filter noise."],
+            "5": ["Recalibrate using reference points.", "Try resetting the sensor values.", "Use a different calibration method."],
+            "6": ["Check for ground loops and stabilize servos.", "Lubricate mechanical parts.", "Reduce PWM frequency."],
+            "7": ["Use a higher-capacity battery.", "Reduce unnecessary movements.", "Check for power leaks."],
+            "8": ["Reduce interference from EM sources.", "Try a different communication channel.", "Use a stronger antenna."],
+            "9": ["Check for excessive servo load.", "Use a more robust motor driver.", "Reduce motor speed."],
+            "10": ["Debug systematically and isolate issues.", "Try reinstalling the firmware.", "Use logging tools to track errors."],
+            "11": ["Optimize real-time processing.", "Upgrade the microcontroller.", "Reduce background tasks."],
+            "12": ["Ensure mechanical parts are aligned.", "Use a calibration tool.", "Double-check sensor readings."]
+        };
+    
+        const boastfulResponses = {
+            "1": "🔥 Overheating defeated! I just turned down the heat on that problem! 🧊",
+            "2": "📊 PID tuning mastered! Call me the 'PID whisperer' from now on! 🏆",
+            "3": "⚡ Power fluctuations? Gone. I just stabilized your bionic arm like a pro! 😏",
+            "4": "🔇 Noise eliminated! I should start an anti-noise consulting firm. 🤖🎸",
+            "5": "🎯 Calibration fixed! Your arm is now as precise as a Swiss watch. ⌚",
+            "6": "🤖 No more jitter! I just turned your shaky arm into a smooth operator. 🚀",
+            "7": "🔋 Battery problem solved! Your arm is now an energy-efficient beast! 💪",
+            "8": "📡 Wireless issue gone! Your arm now has a better signal than most phones. 📶",
+            "9": "🔌 Overcurrent problem handled! Your arm has power, but it knows its limits now! ⚙️",
+            "10": "🐞 Software bugs crushed! I just debugged your arm like a coding ninja. 🥷",
+            "11": "⚡ Speed boost achieved! Your arm now runs faster than my coffee machine. ☕",
+            "12": "🦾 Joint misalignment fixed! Your arm is now more aligned than my life choices. 😂"
         };
     
         function toggleChatbot() {
             let chatbotContainer = document.getElementById('chatbotContainer');
             chatbotContainer.style.display = chatbotContainer.style.display === 'none' ? 'flex' : 'none';
         }
+    
+        document.addEventListener('click', function(event) {
+            let chatbotContainer = document.getElementById('chatbotContainer');
+            let chatbotLogo = document.querySelector('.chatbot-logo');
+    
+            if (!chatbotContainer.contains(event.target) && event.target !== chatbotLogo) {
+                chatbotContainer.style.display = 'none';
+            }
+        });
     
         function handleChat(event) {
             if (event.key === 'Enter') {
@@ -211,29 +238,62 @@
             inputField.value = '';
     
             setTimeout(() => {
-                if (stage === 0) {
-                    if (input.includes('yes')) {
-                        chatBox.innerHTML += `<div class="message bot-message">Here are some common issues:</div>`;
-                        troubleshootingSteps.forEach(step => {
-                            chatBox.innerHTML += `<div class="message bot-message">${step}</div>`;
-                        });
-                        chatBox.innerHTML += `<div class="message bot-message">Please type a number (1-12) to get help with a specific issue.</div>`;
-                        stage = 1;
-                    } else if (input.includes('no')) {
-                        chatBox.innerHTML += `<div class="message bot-message">Alright, I'm here if you need me! 😊</div>`;
-                    } else {
-                        chatBox.innerHTML += `<div class="message bot-message">Please respond with 'Yes' or 'No'. 😊</div>`;
-                    }
-                } else if (stage === 1) {
-                    if (solutions[input]) {
-                        chatBox.innerHTML += `<div class="message bot-message">${solutions[input]}</div>`;
-                    } else {
-                        chatBox.innerHTML += `<div class="message bot-message">Please enter a valid number (1-12).</div>`;
-                    }
-                }
+                chatBox.innerHTML += `<div class="message bot-message typing">📝 Typing...</div>`;
+                chatBox.scrollTop = chatBox.scrollHeight;
     
-                chatBox.scrollTop = chatBox.scrollHeight; // Auto-scroll to the latest message
-            }, 1000);
+                setTimeout(() => {
+                    document.querySelector('.typing').remove();
+    
+                    if (input === "menu") {
+                        resetChatbot();
+                        return;
+                    }
+    
+                    if (stage === 0) {
+                        if (input.includes('yes')) {
+                            chatBox.innerHTML += `<div class="message bot-message">Here are some common issues:</div>`;
+                            troubleshootingSteps.forEach(step => {
+                                chatBox.innerHTML += `<div class="message bot-message">${step}</div>`;
+                            });
+                            chatBox.innerHTML += `<div class="message bot-message">Please type a number (1-12) to get help with a specific issue.</div>`;
+                            stage = 1;
+                        }
+                    } else if (stage === 1 && solutions[input]) {
+                        currentProblem = input;
+                        problemCount[currentProblem] = 0;
+                        giveSolution(currentProblem);
+                    } else if (stage === 2) {
+                        if (input.includes('yes')) {
+                            problemCount[currentProblem]++;
+                            if (problemCount[currentProblem] < 3) {
+                                giveSolution(currentProblem);
+                            } else {
+                                chatBox.innerHTML += `<div class="message bot-message">This one's tough! Contact <strong>teambionic06@gmail.com</strong>. 💡</div>`;
+                                chatBox.innerHTML += `<div class="message bot-message">Type 'menu' to restart. 🔄</div>`;
+                                stage = 3;
+                            }
+                        } else if (input.includes('no')) {
+                            let boastfulResponse = boastfulResponses[currentProblem] || "🔥 Problem solved! Another win for Bionic Buddy! 🏆";
+                            chatBox.innerHTML += `<div class="message bot-message">${boastfulResponse}</div>`;
+                            chatBox.innerHTML += `<div class="message bot-message">Need help with anything else? Type 'menu' to restart. 🔄</div>`;
+                            stage = 0;
+                        }
+                    }
+    
+                    chatBox.scrollTop = chatBox.scrollHeight;
+                }, 1500);
+            }, 500);
+        }
+    
+        function giveSolution(problem) {
+            let chatBox = document.getElementById('chatBox');
+            chatBox.innerHTML += `<div class="message bot-message">${solutions[problem][problemCount[problem]]}</div>`;
+            chatBox.innerHTML += `<div class="message bot-message">Is the problem still there? (Yes/No) 🤔</div>`;
+            stage = 2;
+        }
+    
+        function resetChatbot() {
+            location.reload();
         }
     </script>
     
