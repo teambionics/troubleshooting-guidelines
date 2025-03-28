@@ -208,6 +208,16 @@
             "12": "🦾 Joint misalignment fixed! Your arm is now more aligned than my life choices. 😂"
         };
     
+        const funnyInvalidResponses = [
+            "🤨 Whoa! I didn't quite catch that. Try speaking robot. 🤖",
+            "😅 I think you just broke my circuits with that response. Try again!",
+            "🧐 Hmm... that answer wasn't in my database. Maybe try 'Yes' or 'No'?",
+            "🤔 Are you secretly testing my patience? Just type 'Yes' or 'No'!",
+            "😆 If that was Morse code, I totally missed it. Try again!",
+            "🚨 SYSTEM ALERT: User has entered something confusing. Please reboot human brain. 😂",
+            "🛑 Error 404: Valid response not found! Let's try that again."
+        ];
+    
         function toggleChatbot() {
             let chatbotContainer = document.getElementById('chatbotContainer');
             chatbotContainer.style.display = chatbotContainer.style.display === 'none' ? 'flex' : 'none';
@@ -277,6 +287,9 @@
                             chatBox.innerHTML += `<div class="message bot-message">${boastfulResponse}</div>`;
                             chatBox.innerHTML += `<div class="message bot-message">Need help with anything else? Type 'menu' to restart. 🔄</div>`;
                             stage = 0;
+                        } else {
+                            let funnyResponse = funnyInvalidResponses[Math.floor(Math.random() * funnyInvalidResponses.length)];
+                            chatBox.innerHTML += `<div class="message bot-message">${funnyResponse}</div>`;
                         }
                     }
     
